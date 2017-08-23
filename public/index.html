@@ -3,39 +3,33 @@
   <head>
     <meta charset="UTF-8">
     <title>Politics Commentor</title>
-      <style>
-      #articles {
-        display: inline-block;
-        overflow: auto;
-        width: 60%;
-        height: 700px;
-      }
-      #notes {
-        float: right;
-        width: 30%;
-      }
-      textarea, input {
-        display: block;
-        width: 100%;
-        background-color: #FCF5C7;
-      }
-      input {
-        height: 36px;
-        font-size: 24px;
-      }
-      textarea {
-        height: 200px;
-        font-size: 18px;
-      }
-    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/css/materialize.min.css">
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
+        <nav>
+                <div class="nav-wrapper">
+                  <a href="/index" class="brand-logo">r/Politics Commenter</a>
+                  <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons">Menu</i></a>
+                  <ul class="right hide-on-med-and-down">
+                    <li><a href="/articles">Articles</a></li>
+                    <li><a href="/saved">Saved</a></li>
+                    <li><a href="/scrape">Scrape</a></li>
+                  </ul>
+                  <ul class="side-nav" id="mobile-demo">
+                    <li><a href="/articles">Articles</a></li>
+                    <li><a href="/saved">Saved</a></li>
+                    <li><a href="/scrape">Scrape</a></li>
+                  </ul>
+                </div>
+              </nav>
     <div id="wrapper">
       <h1>r/Politics Scraper & Commentor</h1>
-      <h2><i>Scrape article by going to /scrape then / - then you'll be able to click and comment.</i></h2>
-      <div id="articles"></div>
-      <div id="comments"></div>
+      <h2><i>Scrape article by clicking the Scrape button, then go back to "/" to click and comment.</i></h2>
+      <div class="row">
+      <div id="articles" class="col s8"></div>
+      <div id="comments" class="col s4"></div>
+      </div>
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.1/js/materialize.min.js"></script>

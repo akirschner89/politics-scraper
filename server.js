@@ -22,6 +22,12 @@ app.use(bodyParser.urlencoded({
 
 app.use(express.static("public"));
 
+// Handlebars
+var exphbs = require("express-handlebars");
+app.engine("handlebars", exphbs({ defaultLayout: "main" }));
+app.set("view engine", "handlebars");
+
+
 // Database configuration with mongoose
 mongoose.connect("mongodb://localhost/politics");
 var db = mongoose.connection;
@@ -116,6 +122,9 @@ app.post("/articles/:id", function (req, res) {
       });
     });
 
+    // Routes <> Handebars
+    // var routes = require("./routes/handlebars-router.js");
+    // app.use("/", routes);
 
       // Listen on port 3000
       app.listen(4000, function () {
