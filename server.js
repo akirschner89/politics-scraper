@@ -38,7 +38,6 @@ db.once("open", function () {
 
 
 // Routes
-
 app.get("/scrape", function (req, res) {
   request("https://www.reddit.com/r/politics/", function (error, response, html) {
     var $ = cheerio.load(html);
@@ -51,7 +50,6 @@ app.get("/scrape", function (req, res) {
       // Add the text and href of every link, and save them as properties of the result object
       result.title = $(this).text();
       result.link = $(this).children().attr("href");
-      // result.imageLink - $(this).
 
       // Using our Article model, create a new entry
       // This effectively passes the result object to the entry (and the title and link)
@@ -86,7 +84,7 @@ app.get("/articles", function (req, res) {
 // This will grab an article by it's ObjectId
 app.get("/articles/:id", function (req, res) {
 
-  Article.findById({"_id":req.params.id}).populate('comment').exec(function (err, data) {
+  Article.findById({"_id": req.params.id}).populate('comment').exec(function (err, data) {
     if (err) {
       res.send(err);
     } else {
@@ -97,28 +95,23 @@ app.get("/articles/:id", function (req, res) {
 
 // Create a new note or replace an existing note
 app.post("/articles/:id", function (req, res) {
-
       // save the new note that gets posted to the Comment collection
       var newComment = new Comment(req.body);
 
       // Now, save that entry to the db
       newComment.save(function (err, doc) {
-        // Log any errors
         if (err) {
           console.log(err);
         }
         // Or log the doc
         else {
-
-          // then find an article from the req.params.id
-          Article.findByIdAndUpdate(req.params.id, {"comment": doc._id}).exec(function (err, newdoc) {
+          Article.findByIdAndUpdate({"_id": req.params.id}, {$push: {"comment": doc._id}}, {new:true}, function (err, newdoc) {
             if (err) {
               res.send(err);
             } else {
               res.send(newdoc);
             }
           });
-          // and update it's "note" property with the _id of the new note
         };
       });
     });
