@@ -5,6 +5,7 @@ var logger = require("morgan");
 var mongoose = require("mongoose");
 var request = require("request");
 var cheerio = require("cheerio");
+var path = require("path");
 
 mongoose.Promise = Promise;
 
@@ -20,7 +21,7 @@ app.use(bodyParser.urlencoded({
   extended: false
 }));
 
-app.use(express.static("public"));
+app.use('/', express.static(path.join(__dirname, 'public/assets')));
 
 // Handlebars
 var exphbs = require("express-handlebars");
@@ -32,11 +33,9 @@ app.set("view engine", "handlebars");
 mongoose.connect("mongodb://localhost/politics");
 var db = mongoose.connection;
 
-
 db.on("error", function (error) {
   console.log("Mongoose Error: ", error);
 });
-
 
 db.once("open", function () {
   console.log("Mongoose connection successful.");
@@ -47,18 +46,14 @@ db.once("open", function () {
 app.get("/scrape", function (req, res) {
   request("https://www.reddit.com/r/politics/", function (error, response, html) {
     var $ = cheerio.load(html);
-    // Now, we grab every h2 within an article tag, and do the following:
-    $("p.title").each(function(i, element) {      
 
-      // Save an empty result object
+    $("p.title").each(function (i, element) {
+
       var result = {};
 
-      // Add the text and href of every link, and save them as properties of the result object
       result.title = $(this).text();
       result.link = $(this).children().attr("href");
 
-      // Using our Article model, create a new entry
-      // This effectively passes the result object to the entry (and the title and link)
       var entry = new Article(result);
 
       entry.save(function (err, doc) {
@@ -72,10 +67,10 @@ app.get("/scrape", function (req, res) {
 
     });
   });
-  res.send("Scrape Complete");
+  res.render("scrape.handlebars");
 });
 
-// This will get the articles we scraped from the mongoDB
+// Get scraped articles
 app.get("/articles", function (req, res) {
 
   Article.find({}, function (err, data) {
@@ -87,10 +82,10 @@ app.get("/articles", function (req, res) {
   });
 });
 
-// This will grab an article by it's ObjectId
+// Get article by it's id + it's comments
 app.get("/articles/:id", function (req, res) {
 
-  Article.findById({"_id": req.params.id}).populate('comment').exec(function (err, data) {
+  Article.findById({ "_id": req.params.id }).populate('comment').exec(function (err, data) {
     if (err) {
       res.send(err);
     } else {
@@ -99,54 +94,44 @@ app.get("/articles/:id", function (req, res) {
   });
 });
 
-// Create a new note or replace an existing note
+// Post a new comment
 app.post("/articles/:id", function (req, res) {
-      // save the new note that gets posted to the Comment collection
-      var newComment = new Comment(req.body);
+  // save the new comment from the body
+  var newComment = new Comment(req.body);
 
-      // Now, save that entry to the db
-      newComment.save(function (err, doc) {
+  // Save new comment to the DB
+  newComment.save(function (err, doc) {
+    if (err) {
+      console.log(err);
+    }
+    else {
+      //find the article's id and update by pushing a new comment
+      Article.findByIdAndUpdate({ "_id": req.params.id }, { $push: { "comment": doc._id } }, { new: true }, function (err, newdoc) {
         if (err) {
-          console.log(err);
+          res.send(err);
+        } else {
+          res.send(newdoc);
         }
-        // Or log the doc
-        else {
-          Article.findByIdAndUpdate({"_id": req.params.id}, {$push: {"comment": doc._id}}, {new:true}, function (err, newdoc) {
-            if (err) {
-              res.send(err);
-            } else {
-              res.send(newdoc);
-            }
-          });
-        };
       });
-    });
+    };
+  });
+});
 
-    // app.post("/delete", function (req, res) {
-    //   // save the new note that gets posted to the Comment collection
-    //   Article.deleteMany({}, function (err, data) {
-    //     if (err) {
-    //       res.send(err);
-    //     }
-    //   });
-    //   res.send("Rescrape for more articles!");     
-    // });
+app.get("/delete", function (req, res) {
+  Article.deleteMany({}, function (err, data) {
+    if (err) {
+      res.send(err);
+    } else {
+      res.render("delete.handlebars");
+    }
+  });
+});
 
-    app.get("/delete", function (req, res) {
-        Article.deleteMany({}, function (err, data) {
-          if (err) {
-            res.send(err);
-          } else {
-            res.send("Articles Deleted, Rescrape!");
-          }
-        });
-      });
+// Routes <> Handebars
+var routes = require("./routes/handlebars-router.js");
+app.use("/", routes);
 
-    // Routes <> Handebars
-    // var routes = require("./routes/handlebars-router.js");
-    // app.use("/", routes);
-
-      // Listen on port 3000
-      app.listen(4000, function () {
-        console.log("App running on port 4000!");
-      });
+// Listen on port 3000
+app.listen(4000, function () {
+  console.log("App running on port 4000!");
+});

@@ -2,10 +2,10 @@
 	margin: 0;
 	padding: 0;
 	box-sizing: border-box;
-	/* text-align: center; */
 }
 
-body, html {
+body,
+html {
 	height: 100%;
 	width: 100%;
 }
@@ -16,20 +16,33 @@ body, html {
 	width: 60%;
 	height: 700px;
 	margin-bottom: 2%;
-  }
-  #comments {
+}
+
+#comments {
 	width: 30%;
-  }
-  textarea, input {
+}
+
+textarea,
+input {
 	display: block;
 	width: 100%;
 	background-color: #E8F4EC;
-  }
-  input {
+}
+
+input {
 	height: 36px;
 	font-size: 24px;
-  }
-  textarea {
+}
+
+textarea {
 	height: 50px;
 	font-size: 18px;
-  }
+}
+
+#commentButton {
+	margin: 1%;
+}
+
+#commentTitle {
+	font-weight: bold;
+}
