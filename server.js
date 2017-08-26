@@ -122,6 +122,26 @@ app.post("/articles/:id", function (req, res) {
       });
     });
 
+    // app.post("/delete", function (req, res) {
+    //   // save the new note that gets posted to the Comment collection
+    //   Article.deleteMany({}, function (err, data) {
+    //     if (err) {
+    //       res.send(err);
+    //     }
+    //   });
+    //   res.send("Rescrape for more articles!");     
+    // });
+
+    app.get("/delete", function (req, res) {
+        Article.deleteMany({}, function (err, data) {
+          if (err) {
+            res.send(err);
+          } else {
+            res.send("Articles Deleted, Rescrape!");
+          }
+        });
+      });
+
     // Routes <> Handebars
     // var routes = require("./routes/handlebars-router.js");
     // app.use("/", routes);

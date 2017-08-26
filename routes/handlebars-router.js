@@ -41,7 +41,7 @@ router.post("/articles/:id", function (req, res) {
           } else {
             res.send(newdoc);
           }
-        });
+        })
       };
     });
   });
