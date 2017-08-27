@@ -1,0 +1,32 @@
+{
+  "name": "politics-scraper",
+  "version": "1.0.0",
+  "description": "Full stack app for leaving comments on r/politics",
+  "main": "server.js",
+  "dependencies": {
+    "body-parser": "^1.17.2",
+    "cheerio": "^1.0.0-rc.2",
+    "express": "^4.15.4",
+    "express-handlebars": "^3.0.0",
+    "mongoose": "^4.11.7",
+    "morgan": "^1.8.2",
+    "path": "^0.12.7",
+    "request": "^2.81.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akirschner89/politics-scraper.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/akirschner89/politics-scraper/issues"
+  },
+  "homepage": "https://github.com/akirschner89/politics-scraper#readme"
+}
