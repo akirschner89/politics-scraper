@@ -7,6 +7,7 @@ var request = require("request");
 var cheerio = require("cheerio");
 var path = require("path");
 var port = process.env.PORT || 4000; 
+var app = express();
 
 mongoose.Promise = Promise;
 
@@ -14,9 +15,7 @@ mongoose.Promise = Promise;
 var Comment = require("./models/Comment.js");
 var Article = require("./models/Article.js");
 
-var app = express();
-
-// Use morgan and body parser with our app
+// Use morgan and body parser
 app.use(logger("dev"));
 app.use(bodyParser.urlencoded({
   extended: false
@@ -99,7 +98,6 @@ app.get("/articles/:id", function (req, res) {
 
 // Post a new comment
 app.post("/articles/:id", function (req, res) {
-  // save the new comment from the body
   var newComment = new Comment(req.body);
 
   // Save new comment to the DB

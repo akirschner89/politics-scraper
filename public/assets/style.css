@@ -8,6 +8,9 @@ body,
 html {
 	height: 100%;
 	width: 100%;
+	background-color: #D80000;
+	color: white;
+	text-shadow: 2px 2px #1212C4;
 }
 
 #articles {
@@ -16,6 +19,7 @@ html {
 	width: 60%;
 	height: 700px;
 	margin-bottom: 2%;
+	background-color: #000062;
 }
 
 #comments {
@@ -29,20 +33,52 @@ input {
 	background-color: #E8F4EC;
 }
 
+.brand-logo {
+	margin-left: 2%;
+}
+
+ul {
+	margin-right: 2%;
+}
+
+#wrapper {
+	padding-left: 2%;
+}
+
 input {
 	height: 36px;
 	font-size: 24px;
 }
 
 textarea {
-	height: 50px;
-	font-size: 18px;
+	height: 40px;
+	font-size: 20px;
+	color: #1212C4;
 }
 
 #commentButton {
 	margin: 1%;
+	color: #1212C4;
 }
 
 #commentTitle {
 	font-weight: bold;
+}
+
+.nav-wrapper {
+	background-color: #1212C4;
+}
+
+#savecomment {
+	color: #1212C4;
+}
+
+.input-field {
+	background-color: white;
+}
+
+#title,
+#comment {
+	color: #1212C4;
+	font-size: 120%;
 }

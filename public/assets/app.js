@@ -1,7 +1,6 @@
 // Get the articles as JSON
 $.getJSON("/articles", function (data) {
   for (var i = 0; i < data.length; i++) {
-    // Display the JSON info
     $("#articles").append("<p id='commentTitle'>" + data[i].title + "</p><p>" + data[i].link + "<br /><button id='commentButton' data-id='" + data[i]._id + "'>Comment</button></p>" + "<hr>");
   }
 });
@@ -10,8 +9,7 @@ $.getJSON("/articles", function (data) {
 // Whenever someone clicks to comment 
 $(document).on("click", "#commentButton", function (e) {
   e.preventDefault();
-  $("#comments").empty();
-  // Save the id 
+  $("#comments").empty(); 
   var thisId = $(this).attr("data-id");
 
   // AJAX call for the Article
@@ -53,7 +51,6 @@ $(document).on("click", "#commentButton", function (e) {
 
 // When you click the save comment button
 $(document).on("click", "#savecomment", function () {
-  // Grab the id associated with the article
   var thisId = $(this).attr("data-id");
 
   // Run a POST request to change the note, using what's entered in the inputs
@@ -70,4 +67,5 @@ $(document).on("click", "#savecomment", function () {
       $("#comments").empty();
     });
 });
+
 
