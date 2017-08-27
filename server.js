@@ -6,6 +6,7 @@ var mongoose = require("mongoose");
 var request = require("request");
 var cheerio = require("cheerio");
 var path = require("path");
+var port = process.env.PORT || 4000; 
 
 mongoose.Promise = Promise;
 
@@ -30,8 +31,10 @@ app.set("view engine", "handlebars");
 
 
 // Database configuration with mongoose
-mongoose.connect("mongodb://localhost/politics");
+mongoose.connect("mongodb://heroku_x69kpt9j:e3cao52ilh3dgqnu6sgsprpeqn@ds159493.mlab.com:59493/heroku_x69kpt9j");
 var db = mongoose.connection;
+// string for heroku mLab: mongodb://heroku_x69kpt9j:e3cao52ilh3dgqnu6sgsprpeqn@ds159493.mlab.com:59493/heroku_x69kpt9j
+// string for localhost: mongodb://localhost/politics
 
 db.on("error", function (error) {
   console.log("Mongoose Error: ", error);
@@ -132,6 +135,6 @@ var routes = require("./routes/handlebars-router.js");
 app.use("/", routes);
 
 // Listen on port 3000
-app.listen(4000, function () {
-  console.log("App running on port 4000!");
+app.listen(port, function () {
+  console.log("App running on PORT: " + port);
 });
